@@ -5,5 +5,14 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     kq.ok = false;
     kq.physical = -1;
 
+    int s = addr.segment;
+    int d = addr.offset;
+
+    if (table.empty()) {
+        kq.error = "Loi: bang phan doan rong";
+        return kq;
+    }
+
     return kq;
 }
+
