@@ -32,6 +32,8 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     return kq;
     }
 
+    kq.ok = true;
+    kq.physical = table[s].base + d;
     return kq;
 }
 
