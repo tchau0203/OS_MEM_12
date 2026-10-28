@@ -13,6 +13,12 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
         return kq;
     }
 
+    if (s < 0 || s >= (int)table.size()) {
+    kq.error = "Loi: doan " + std::to_string(s) +
+               " khong ton tai";
+    return kq;
+    }
+
     return kq;
 }
 
