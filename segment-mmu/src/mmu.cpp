@@ -19,6 +19,19 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     return kq;
     }
 
+    if (d < 0) {
+    kq.error = "Loi: do doi am";
+    return kq;
+    }
+
+    if (d >= table[s].limit) {
+    kq.error = "Segmentation fault: do doi " +
+               std::to_string(d) +
+               " vuot qua limit " +
+               std::to_string(table[s].limit);
+    return kq;
+    }
+
     return kq;
 }
 
