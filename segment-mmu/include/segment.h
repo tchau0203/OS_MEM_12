@@ -1,4 +1,4 @@
-# HDH_GR12
+
 #ifndef SEGMENT_H
 #define SEGMENT_H
 
