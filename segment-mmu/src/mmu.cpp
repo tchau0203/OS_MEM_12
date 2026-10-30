@@ -1,5 +1,6 @@
 #include "segment.h"
 #include <climits>
+
 TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     TranslateResult kq;
     kq.ok = false;
@@ -8,21 +9,17 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     int s = addr.segment;
     int d = addr.offset;
 
-    kq.ok = true;
-    kq.physical = table[s].base + d;
-    return kq;
-
     if (table.empty()) {
         kq.error = "Loi: bang phan doan rong";
         return kq;
     }
 
-    if  (s < 0 || s >= (int)table.size()) {
-        kq.error = "Loi: Doan " + std::to_string(s) + "khong ton tai";
+    if (s < 0 || s >= (int)table.size()) {
+        kq.error = "Loi: doan " + std::to_string(s) + " khong ton tai";
         return kq;
     }
 
-        if (d < 0) {
+    if (d < 0) {
         kq.error = "Loi: do doi am";
         return kq;
     }
@@ -37,6 +34,7 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
         kq.error = "Loi: tran so khi tinh dia chi vat ly";
         return kq;
     }
-
+    kq.ok = true;
+    kq.physical = table[s].base + d;
     return kq;
 }
