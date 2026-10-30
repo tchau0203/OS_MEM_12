@@ -3,7 +3,6 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     TranslateResult kq;
     kq.ok = false;
     kq.physical = -1;
-    return kq;
 
     int s = addr.segment;
     int d = addr.offset;
@@ -20,4 +19,18 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     if  (s < 0 || s >= (int)table.size()) {
         kq.error = "Loi: Doan " + std::to_string(s) + "khong ton tai";
         return kq;
+    }
+
+        if (d < 0) {
+        kq.error = "Loi: do doi am";
+        return kq;
+    }
+
+    if (d >= table[s].limit) {
+        kq.error = "Segmentation fault: do doi " + std::to_string(d) +
+                   " vuot qua limit " + std::to_string(table[s].limit);
+        return kq;
+    }
+
+    return kq;
 }
