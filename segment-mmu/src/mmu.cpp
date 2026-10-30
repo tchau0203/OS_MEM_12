@@ -8,6 +8,16 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     int s = addr.segment;
     int d = addr.offset;
 
+    if (table.empty()) {
+        kq.error = "Loi: bang phan doan rong";
+        return kq;
+    }
+
+    if (s < 0 || s >= (int)table.size()) {
+        kq.error = "Loi: doan " + std::to_string(s) + " khong ton tai";
+        return kq;
+    }
+
     kq.ok = true;
     kq.physical = table[s].base + d;
     return kq;
