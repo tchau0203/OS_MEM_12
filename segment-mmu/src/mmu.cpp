@@ -1,4 +1,5 @@
 #include "segment.h"
+#include <climits>
 TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     TranslateResult kq;
     kq.ok = false;
@@ -29,6 +30,11 @@ TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     if (d >= table[s].limit) {
         kq.error = "Segmentation fault: do doi " + std::to_string(d) +
                    " vuot qua limit " + std::to_string(table[s].limit);
+        return kq;
+    }
+
+    if (table[s].base > INT_MAX - d) {
+        kq.error = "Loi: tran so khi tinh dia chi vat ly";
         return kq;
     }
 
