@@ -28,7 +28,10 @@ struct TranslateResult {
 using SegmentTable = std::vector<Segment>;
 
 
+// Returns an empty table on incomplete input; check std::cin to detect EOF.
 SegmentTable loadSegmentTable();
+
+void printSegmentTable(const SegmentTable& table);
 
 TranslateResult translate(const SegmentTable& table, LogicalAddress addr);
 
