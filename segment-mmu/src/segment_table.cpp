@@ -1,5 +1,7 @@
 #include "segment.h"
 
+#include <cstddef>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <sstream>
@@ -102,4 +104,23 @@ SegmentTable loadSegmentTable() {
         table.push_back(segment);
     }
     return table;
+}
+
+void printSegmentTable(const SegmentTable& table) {
+    std::cout << "\n=== BANG PHAN DOAN ===\n";
+    if (table.empty()) {
+        std::cout << "Bang phan doan rong.\n";
+        return;
+    }
+
+    std::cout << std::setw(10) << "Doan" << " | " << std::setw(10) << "Base"
+              << " | " << std::setw(10) << "Limit" << " | "
+              << std::setw(10) << "End (excl)" << " | Ten doan\n";
+    std::cout << "-----------+------------+------------+------------+----------\n";
+    for (std::size_t index = 0; index < table.size(); ++index) {
+        const Segment& segment = table[index];
+        std::cout << std::setw(10) << index << " | " << std::setw(10) << segment.base
+                  << " | " << std::setw(10) << segment.limit << " | "
+                  << std::setw(10) << endExclusive(segment) << " | " << segment.name << '\n';
+    }
 }
