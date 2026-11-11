@@ -42,6 +42,38 @@ bool readName(std::string& name) {
     }
 }
 
+long long endExclusive(const Segment& segment) {
+    return static_cast<long long>(segment.base) + segment.limit;
+}
+
+bool overlaps(const Segment& a, const Segment& b) {
+    // Empty segments occupy no memory; adjacent half-open ranges do not overlap.
+    return a.limit > 0 && b.limit > 0 &&
+           a.base < endExclusive(b) && b.base < endExclusive(a);
+}
+
+bool readRange(const SegmentTable& table, Segment& segment) {
+    for (;;) {
+        if (!readNonNegativeInt("  Base: ", segment.base) ||
+            !readNonNegativeInt("  Limit: ", segment.limit)) {
+            return false;
+        }
+
+        bool conflict = false;
+        for (const Segment& existing : table) {
+            if (overlaps(segment, existing)) {
+                std::cout << "Loi: vung nho chong len doan '" << existing.name
+                          << "'. Hay nhap lai base va limit.\n";
+                conflict = true;
+                break;
+            }
+        }
+        if (!conflict) {
+            return true;
+        }
+    }
+}
+
 } // namespace
 
 SegmentTable loadSegmentTable() {
@@ -55,9 +87,7 @@ SegmentTable loadSegmentTable() {
     for (int index = 0; index < count; ++index) {
         Segment segment{};
         std::cout << "Doan " << index << ":\n";
-        if (!readNonNegativeInt("  Base: ", segment.base) ||
-            !readNonNegativeInt("  Limit: ", segment.limit) ||
-            !readName(segment.name)) {
+        if (!readRange(table, segment) || !readName(segment.name)) {
             return {};
         }
         table.push_back(segment);
