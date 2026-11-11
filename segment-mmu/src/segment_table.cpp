@@ -1,6 +1,7 @@
 #include "segment.h"
 
 #include <iostream>
+#include <limits>
 #include <sstream>
 
 namespace {
@@ -57,6 +58,14 @@ bool readRange(const SegmentTable& table, Segment& segment) {
         if (!readNonNegativeInt("  Base: ", segment.base) ||
             !readNonNegativeInt("  Limit: ", segment.limit)) {
             return false;
+        }
+
+        // The MMU returns int addresses; the last valid byte must fit in int.
+        if (segment.limit > 0 &&
+            endExclusive(segment) - 1 > std::numeric_limits<int>::max()) {
+            std::cout << "Loi: dia chi cuoi vuot gioi han kieu int. "
+                         "Hay nhap lai base va limit.\n";
+            continue;
         }
 
         bool conflict = false;
