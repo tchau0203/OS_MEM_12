@@ -1,5 +1,6 @@
 #include "segment.h"
 #include <climits>
+#include <string>
 
 TranslateResult translate(const SegmentTable& table, LogicalAddress addr) {
     TranslateResult kq;
