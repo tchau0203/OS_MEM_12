@@ -1,6 +1,33 @@
 #include <iostream>
 #include "segment.h"         
-void inputSegmentTable();     
+
+SegmentTable table;
+
+void inputSegmentTable() {
+    table = loadSegmentTable();
+    std::cout << "\n>> Da cap nhat bang phan doan!\n";
+}
+
+int translateAddress() {
+    if (table.empty()) {
+        std::cout << "\n[!] Bang phan doan dang rong. Hay nhap bang phan doan truoc.\n";
+        return -1;
+    }
+    LogicalAddress addr;
+    std::cout << "Nhap so hieu doan (s): ";
+    std::cin >> addr.segment;
+    std::cout << "Nhap do doi (d): ";
+    std::cin >> addr.offset;
+
+    TranslateResult res = translate(table, addr);
+    if (res.ok) {
+        std::cout << ">> Dia chi vat ly: " << res.physical << "\n";
+        return res.physical;
+    } else {
+        std::cout << ">> Loi: " << res.error << "\n";
+        return -1;
+    }
+}
 
 void printMenu() {
     std::cout << "\n====== SEGMENT MMU SIMULATOR ======\n";
@@ -19,7 +46,7 @@ int main() {
         switch (choice) {
             case 1: inputSegmentTable(); break;
             case 2: translateAddress();  break;
-            case 3: /* in bảng */ break;
+            case 3: printSegmentTable(table); break;
             case 0: std::cout << "Thoat.\n"; break;
             default: std::cout << "Lua chon khong hop le!\n";
         }
